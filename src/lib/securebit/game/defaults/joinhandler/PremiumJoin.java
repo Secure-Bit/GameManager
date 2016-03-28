@@ -3,6 +3,7 @@ package lib.securebit.game.defaults.joinhandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -51,32 +52,22 @@ public class PremiumJoin extends CraftJoinHandler {
 
 	@Override
 	public String onLogin(Player player) {
-		if (this.canUserJoin()) {
-			return null;
-		}
-		
 		String result;
 		
-		if (this.hasPermission(player, this.permStaff)) {
-			if (this.kickPlayer(this.getPermissionLevel(player))) {
-				result = null;
-			} else {
-				result = this.messageServerFull;
-			}
-		} else if (this.hasPermission(player, this.permPremium)) {
+		if (this.canUserJoin()) {
+			result = null;
+		} else {
 			if (this.game.getPlayers().size() < this.game.getSize()) {
-				result = null;
-			} else if (this.premiumKick) {
+				return null;
+			} else {
+				System.out.println("cannot join");
+				
 				if (this.kickPlayer(this.getPermissionLevel(player))) {
 					result = null;
 				} else {
 					result = this.messageServerFull;
 				}
-			} else {
-				result = this.messageServerFull;
 			}
-		} else {
-			result = this.messageServerFull;
 		}
 		
 		for (JoinListener listener : this.getListeners()) {
@@ -103,7 +94,11 @@ public class PremiumJoin extends CraftJoinHandler {
 	}
 	
 	public boolean canUserJoin() {
-		return this.game.getPlayers().size() < (this.game.getSize() - this.premiumSlots);
+		List<GamePlayer> players = this.game.getPlayers().stream().filter((player) -> 
+				!(this.hasPermission(player.getHandle(), this.permPremium) || this.hasPermission(player.getHandle(), this.permStaff))
+		).collect(Collectors.toList());
+		
+		return players.size() < (this.game.getSize() - this.premiumSlots);
 	}
 	
 	public boolean canPremiumJoin() {
