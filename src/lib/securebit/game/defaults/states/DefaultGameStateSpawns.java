@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import lib.securebit.countdown.Countdown;
 import lib.securebit.countdown.DefaultCountdown;
 import lib.securebit.countdown.TimeListener;
@@ -16,9 +19,6 @@ import lib.securebit.game.impl.CraftGameStateArena;
 import lib.securebit.timer.AbstractTimer;
 import lib.securebit.timer.Timer;
 import lib.securebit.timer.Timer.TimerEntry;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 public abstract class DefaultGameStateSpawns<G extends Game<? extends GamePlayer>> extends CraftGameStateArena<G> {
 	

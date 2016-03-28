@@ -89,6 +89,8 @@ public abstract class DefaultGameStateLobby<G extends Game<? extends GamePlayer>
 				}
 			}
 		}, () -> {}));
+		
+		this.setJoinHandler(handler);
 	}
 	
 	@Override
